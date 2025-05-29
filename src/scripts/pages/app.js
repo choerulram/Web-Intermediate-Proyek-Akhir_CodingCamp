@@ -1,12 +1,15 @@
 import { getRoute, getActivePathname } from '../routes/url-parser';
 import { routes } from '../routes/routes';
 import handlePageTransition from '../utils/page-transition';
+import { isCurrentPushSubscriptionAvailable, subscribe, unsubscribe } from '../utils/notification-helper';
 import {
   generateAuthenticatedNavigationListTemplate,
   generateMainNavigationListTemplate,
+  generateSubscribeButtonTemplate,
   generateUnauthenticatedNavigationListTemplate,
+  generateUnsubscribeButtonTemplate,
 } from '../templates';
-import { setupSkipToContent, transitionHelper } from '../utils';
+import { isServiceWorkerAvailable, setupSkipToContent, transitionHelper } from '../utils';
 import { getAccessToken, getLogout } from '../utils/auth';
 
 class App {
@@ -77,6 +80,31 @@ class App {
       }
     });
   }
+
+  async #setupPushNotification() {
+    const pushNotificationTools = document.getElementById('push-notification-tools');
+    const isSubscribed = await isCurrentPushSubscriptionAvailable();
+
+    if (isSubscribed) {
+      pushNotificationTools.innerHTML = generateUnsubscribeButtonTemplate();
+
+      document.getElementById('unsubscribe-button').addEventListener('click', () => {
+        unsubscribe().finally(() => {
+          this.#setupPushNotification();
+        });
+      });
+      
+      return;
+    }
+
+    pushNotificationTools.innerHTML = generateSubscribeButtonTemplate();
+    document.getElementById('subscribe-button').addEventListener('click', () => {
+      subscribe().finally(() => {
+        this.#setupPushNotification();
+      });
+    });
+  }
+  
   async renderPage() {
     try {
       const pathname = getActivePathname();
@@ -98,6 +126,10 @@ class App {
       await transition.updateCallbackDone;
       scrollTo({ top: 0, behavior: 'instant' });
       this.#setupNavigationList();
+
+      if (isServiceWorkerAvailable()) {
+        this.#setupPushNotification();
+      }
     } catch (error) {
       console.error('Error rendering page:', error);
       this.#content.innerHTML = `

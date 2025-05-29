@@ -15,10 +15,9 @@ const ENDPOINTS = {
   // Story Comment
   STORY_COMMENTS_LIST: (storyId) => `${BASE_URL}/stories/${storyId}/comments`,
   STORE_NEW_STORY_COMMENT: (storyId) => `${BASE_URL}/stories/${storyId}/comments`,
-
   // Notifications
   SUBSCRIBE: `${BASE_URL}/notifications/subscribe`,
-  UNSUBSCRIBE: `${BASE_URL}/notifications/subscribe`,
+  UNSUBSCRIBE: `${BASE_URL}/notifications/subscribe`, // Same as SUBSCRIBE but uses DELETE method
   SEND_STORY_TO_ME: (storyId) => `${BASE_URL}/stories/${storyId}/notify-me`,
   SEND_STORY_TO_USER: (storyId) => `${BASE_URL}/stories/${storyId}/notify`,
   SEND_STORY_TO_ALL_USER: (storyId) => `${BASE_URL}/stories/${storyId}/notify-all`,
@@ -132,11 +131,20 @@ export async function storeNewStory({ description, photo, lat, lon }) {
   };
 }
 
-export async function getAllCommentsByStoryId(storyId) {
+export async function subscribePushNotification({ endpoint, keys: { p256dh, auth } }) {
   const accessToken = getAccessToken();
+  const data = JSON.stringify({
+    endpoint,
+    keys: { p256dh, auth },
+  });
 
-  const fetchResponse = await fetch(ENDPOINTS.STORY_COMMENTS_LIST(storyId), {
-    headers: { Authorization: `Bearer ${accessToken}` },
+  const fetchResponse = await fetch(ENDPOINTS.SUBSCRIBE, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+    },
+    body: data,
   });
   const json = await fetchResponse.json();
 
@@ -146,17 +154,35 @@ export async function getAllCommentsByStoryId(storyId) {
   };
 }
 
-export async function storeNewCommentByStoryId(storyId, { body }) {
+export async function unsubscribePushNotification({ endpoint }) {
   const accessToken = getAccessToken();
-  const data = JSON.stringify({ body });
+  const data = JSON.stringify({ endpoint });
 
-  const fetchResponse = await fetch(ENDPOINTS.STORE_NEW_STORY_COMMENT(storyId), {
-    method: 'POST',
+  const fetchResponse = await fetch(ENDPOINTS.UNSUBSCRIBE, {
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${accessToken}`,
     },
     body: data,
+  });
+  const json = await fetchResponse.json();
+
+  return {
+    ...json,
+    ok: fetchResponse.ok,
+  };
+}
+
+export async function sendStoryNotification(storyId) {
+  const accessToken = getAccessToken();
+
+  const fetchResponse = await fetch(ENDPOINTS.SEND_STORY_TO_ALL_USER(storyId), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+    },
   });
   const json = await fetchResponse.json();
 

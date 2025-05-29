@@ -122,7 +122,14 @@ export default class NewPage {
         lat: parseFloat(this.#form.elements.namedItem('lat').value),
         lon: parseFloat(this.#form.elements.namedItem('lon').value),
       };
-      await this.#presenter.postNewStory(data);
+
+      try {
+        await this.#presenter.postNewStory(data);
+        // Force redirect immediately after successful submission
+        window.location.href = '#/';
+      } catch (error) {
+        console.error('Failed to submit story:', error);
+      }
     });
 
     // Handle file input
@@ -294,17 +301,16 @@ export default class NewPage {
 
     return selectedPicture;
   }
-
-  storeSuccessfully(message) {
-    console.log(message);
+  storeSuccessfully() {
+    // Not used anymore since redirect and notifications are handled elsewhere
     this.clearForm();
-
-    // Redirect page
-    location.href = '/';
   }
 
   storeFailed(message) {
-    alert(message);
+    // Only show alert if there's an actual error message
+    if (message) {
+      alert(message);
+    }
   }
 
   clearForm() {

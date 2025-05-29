@@ -21,7 +21,6 @@ export function generateMainNavigationListTemplate() {
 
 export function generateUnauthenticatedNavigationListTemplate() {
   return `
-    <li id="push-notification-tools" class="push-notification-tools"></li>
     <li><a id="story-list-button" class="story-list-button" href="#/">Beranda</a></li>
     <li><a id="about-button" class="about-button" href="#/about">About</a></li>
     <li><a id="login-button" href="#/login">Login</a></li>
@@ -126,5 +125,35 @@ export function generateStoryDetailModalTemplate({
         </div>
       </div>
     </div>
+  `;
+}
+
+export function generateSubscribeButtonTemplate() {
+  return `
+    <button id="subscribe-button" class="btn subscribe-button">
+      <span class="button-content">
+        <i class="fas fa-bell"></i>
+        <span class="button-text">Aktifkan Notifikasi</span>
+      </span>
+    </button>
+  `;
+}
+
+export function generateUnsubscribeButtonTemplate() {
+  return `
+    <button id="unsubscribe-button" class="btn unsubscribe-button">
+      <span class="button-content">
+        <i class="fas fa-bell-slash"></i>
+        <span class="button-text">Nonaktifkan Notifikasi</span>
+      </span>
+    </button>
+  `;
+}
+
+export function generateSaveReportButtonTemplate() {
+  return `
+    <button id="report-detail-save" class="btn btn-transparent">
+      Simpan laporan <i class="far fa-bookmark"></i>
+    </button>
   `;
 }
