@@ -83,5 +83,33 @@
       "type": "image/png",
       "form_factor": "narrow"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Cerita Baru",
+      "short_name": "Baru",
+      "description": "Menambahkan cerita baru.",
+      "url": "/?source=pwa#/new",
+      "icons": [
+        {
+          "src": "images/icons/add-x512.png",
+          "type": "image/png",
+          "sizes": "512x512"
+        }
+      ]
+    },
+    {
+      "name": "Tentang Aplikasi",
+      "short_name": "Tentang",
+      "description": "Lihat tentang aplikasi StoryApp.",
+      "url": "/?source=pwa#/about",
+      "icons": [
+        {
+          "src": "images/icons/about-x512.png",
+          "type": "image/png",
+          "sizes": "512x512"
+        }
+      ]
+    }
   ]
 }
