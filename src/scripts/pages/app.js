@@ -1,7 +1,11 @@
 import { getRoute, getActivePathname } from '../routes/url-parser';
 import { routes } from '../routes/routes';
 import handlePageTransition from '../utils/page-transition';
-import { isCurrentPushSubscriptionAvailable, subscribe, unsubscribe } from '../utils/notification-helper';
+import {
+  isCurrentPushSubscriptionAvailable,
+  subscribe,
+  unsubscribe,
+} from '../utils/notification-helper';
 import {
   generateAuthenticatedNavigationListTemplate,
   generateMainNavigationListTemplate,
@@ -82,7 +86,13 @@ class App {
   }
 
   async #setupPushNotification() {
+    const isLogin = !!getAccessToken();
+    if (!isLogin) return;
+
     const pushNotificationTools = document.getElementById('push-notification-tools');
+    // Pastikan element ada sebelum mencoba mengakses innerHTML
+    if (!pushNotificationTools) return;
+
     const isSubscribed = await isCurrentPushSubscriptionAvailable();
 
     if (isSubscribed) {
@@ -93,7 +103,7 @@ class App {
           this.#setupPushNotification();
         });
       });
-      
+
       return;
     }
 
@@ -104,7 +114,7 @@ class App {
       });
     });
   }
-  
+
   async renderPage() {
     try {
       const pathname = getActivePathname();
