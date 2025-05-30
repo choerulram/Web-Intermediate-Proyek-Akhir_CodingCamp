@@ -34,7 +34,6 @@ export default class HomePage {
     await this.#presenter.initialGalleryAndMap();
     await this.#updateSavedButtonStates();
   }
-
   async #updateSavedButtonStates() {
     try {
       const savedStories = await Database.getAllReports();
@@ -42,16 +41,27 @@ export default class HomePage {
 
       document.querySelectorAll('.story-item__save-button').forEach((button) => {
         const storyId = button.dataset.storyid;
-        if (savedStoryIds.includes(storyId)) {
-          button.innerHTML = `
-            <i class="fas fa-bookmark"></i>
-            <span>Saved</span>
-          `;
-          button.classList.add('saved');
-        }
+        const isSaved = savedStoryIds.includes(storyId);
+        this.#updateSaveButtonUI(button, isSaved);
       });
     } catch (error) {
       console.error('Error updating saved button states:', error);
+    }
+  }
+
+  #updateSaveButtonUI(button, isSaved) {
+    if (isSaved) {
+      button.innerHTML = `
+        <i class="fas fa-bookmark"></i>
+        <span>Saved</span>
+      `;
+      button.classList.add('saved');
+    } else {
+      button.innerHTML = `
+        <i class="far fa-bookmark"></i>
+        <span>Save</span>
+      `;
+      button.classList.remove('saved');
     }
   }
 
@@ -144,7 +154,6 @@ export default class HomePage {
     `; // Setup event listeners after populating stories
     this.#setupStoryDetailModal();
     this.#setupSaveStoryButtons();
-    this.#setupSaveStoryButtons();
 
     // Give the DOM time to update before initializing maps
     setTimeout(() => {
@@ -228,12 +237,17 @@ export default class HomePage {
   saveToBookmarkFailed(message) {
     alert(message);
   }
-
   #setupSaveStoryButtons() {
     document.querySelectorAll('.story-item__save-button').forEach((button) => {
       button.addEventListener('click', async (event) => {
         const storyId = event.currentTarget.dataset.storyid;
-        await this.#presenter.saveStory(storyId);
+        if (button.classList.contains('saved')) {
+          if (confirm('Remove this story from bookmarks?')) {
+            await this.#presenter.removeStory(storyId);
+          }
+        } else {
+          await this.#presenter.saveStory(storyId);
+        }
       });
     });
   }

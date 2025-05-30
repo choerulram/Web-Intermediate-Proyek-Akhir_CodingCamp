@@ -24,6 +24,10 @@ const Database = {
   async getAllReports() {
     return (await dbPromise).getAll(OBJECT_STORE_NAME);
   },
+
+  async removeReport(id) {
+    return (await dbPromise).delete(OBJECT_STORE_NAME, id);
+  },
 };
 
 export default Database;

@@ -56,4 +56,22 @@ export default class HomePresenter {
       this.#view.saveToBookmarkFailed(error.message || 'Failed to save story to bookmarks');
     }
   }
+
+  async removeStory(storyId) {
+    try {
+      await this.#dbModel.removeReport(storyId);
+      const button = document.querySelector(`.story-item__save-button[data-storyid="${storyId}"]`);
+      if (button) {
+        button.innerHTML = `
+          <i class="far fa-bookmark"></i>
+          <span>Save</span>
+        `;
+        button.classList.remove('saved');
+      }
+      alert('Story removed from bookmarks successfully!');
+    } catch (error) {
+      console.error('removeStory error:', error);
+      alert('Failed to remove story from bookmarks');
+    }
+  }
 }

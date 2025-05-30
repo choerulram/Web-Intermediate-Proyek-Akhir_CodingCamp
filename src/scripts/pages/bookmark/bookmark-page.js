@@ -15,7 +15,7 @@ export default class BookmarkPage {
     return `
       <section class="container">
         <div class="stories-list__container">
-          <h1 class="section-title">Bookmarked Stories</h1>
+          <h1 class="section-title">Daftar Cerita Tersimpan</h1>
           <div id="bookmarked-stories"></div>
           <div id="bookmarked-stories-loading-container"></div>
         </div>
@@ -49,8 +49,8 @@ export default class BookmarkPage {
     try {
       // For bookmarked stories, we already have the data in IndexedDB
       const stories = await Database.getAllReports();
-      const story = stories.find(s => s.id === storyId);
-      
+      const story = stories.find((s) => s.id === storyId);
+
       if (!story) {
         throw new Error('Story not found in bookmarks');
       }
@@ -113,7 +113,8 @@ export default class BookmarkPage {
 
   hideLoading() {
     document.getElementById('bookmarked-stories-loading-container').innerHTML = '';
-  }  populateBookmarkedStories(stories) {
+  }
+  populateBookmarkedStories(stories) {
     if (stories.length <= 0) {
       this.populateStoriesListEmpty();
       return;
@@ -139,6 +140,14 @@ export default class BookmarkPage {
         <span>Saved</span>
       `;
       button.classList.add('saved');
+
+      // Add click handler for removing bookmark
+      button.addEventListener('click', async (event) => {
+        const storyId = event.currentTarget.dataset.storyid;
+        if (confirm('Remove this story from bookmarks?')) {
+          await this.#presenter.removeStory(storyId);
+        }
+      });
     });
 
     // Setup detail button functionality
