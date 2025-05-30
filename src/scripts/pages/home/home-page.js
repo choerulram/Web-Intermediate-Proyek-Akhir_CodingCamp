@@ -8,6 +8,7 @@ import {
 } from '../../templates';
 import HomePresenter from './home-presenter';
 import * as CityCareAPI from '../../data/api';
+import Database from '../../data/database';
 
 export default class HomePage {
   #presenter = null;
@@ -28,6 +29,7 @@ export default class HomePage {
     this.#presenter = new HomePresenter({
       view: this,
       model: CityCareAPI,
+      dbModel: Database,
     });
 
     await this.#presenter.initialGalleryAndMap();
@@ -119,10 +121,10 @@ export default class HomePage {
     }, '');
     document.getElementById('stories-list').innerHTML = `
       <div class="stories-list">${html}</div>
-    `;
-
-    // Setup modal event listeners after populating stories
+    `; // Setup event listeners after populating stories
     this.#setupStoryDetailModal();
+    this.#setupSaveStoryButtons();
+    this.#setupSaveStoryButtons();
 
     // Give the DOM time to update before initializing maps
     setTimeout(() => {
@@ -187,5 +189,32 @@ export default class HomePage {
 
   hideLoading() {
     document.getElementById('stories-list-loading-container').innerHTML = '';
+  }
+
+  saveToBookmarkSuccessfully(storyId, message) {
+    const saveButton = document.querySelector(
+      `.story-item__save-button[data-storyid="${storyId}"]`,
+    );
+    if (saveButton) {
+      saveButton.innerHTML = `
+        <i class="fas fa-bookmark"></i>
+        <span>Saved</span>
+      `;
+      saveButton.classList.add('saved');
+    }
+    alert(message);
+  }
+
+  saveToBookmarkFailed(message) {
+    alert(message);
+  }
+
+  #setupSaveStoryButtons() {
+    document.querySelectorAll('.story-item__save-button').forEach((button) => {
+      button.addEventListener('click', async (event) => {
+        const storyId = event.currentTarget.dataset.storyid;
+        await this.#presenter.saveStory(storyId);
+      });
+    });
   }
 }

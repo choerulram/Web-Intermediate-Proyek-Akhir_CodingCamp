@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack --config ./webpack.prod.js",
     "start-dev": "webpack serve --config ./webpack.dev.js",
-    "serve": "http-server ./dist --port 3001"
+    "serve": "http-server ./dist --port 3070"
   },
   "keywords": [],
   "author": "YOUR_NAME <yourmail@mail.com>",
@@ -28,6 +28,7 @@
     "workbox-webpack-plugin": "^7.3.0"
   },
   "dependencies": {
+    "idb": "^8.0.3",
     "leaflet": "^1.9.4",
     "tiny-slider": "^2.9.4",
     "workbox-cacheable-response": "^7.3.0",

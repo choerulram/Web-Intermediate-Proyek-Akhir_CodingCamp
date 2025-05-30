@@ -1,0 +1,358 @@
+/* NEW STORY FORM */
+/* form */
+.new-form__container {
+  min-height: 400px;
+  position: relative;
+  background: linear-gradient(135deg, #ffffff, var(--primary-lightest) 300%);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 12px var(--primary-shadow-color);
+  margin-bottom: 2rem;
+}
+
+.new-form__title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: var(--primary-dark);
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid var(--primary-lightest);
+  position: relative;
+}
+
+.new-form__title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 3px;
+  background-color: var(--primary-color);
+}
+
+.new-form .form-control {
+  margin-bottom: 2rem;
+}
+
+.new-form__documentations__input {
+  display: none;
+}
+
+.new-form__description__title,
+.new-form__documentations__title,
+.new-form__location__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.new-form textarea {
+  min-height: 200px;
+  padding: 1.25rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  border: 2px solid var(--primary-lightest);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background-color: var(--background-white);
+  resize: vertical;
+}
+
+.new-form textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-shadow-color);
+}
+
+/* New Documentations */
+.new-form__documentations__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.new-form__documentations__buttons .btn {
+  padding: 14px 24px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.new-form__documentations__buttons .btn-outline:hover {
+  background-color: var(--primary-color);
+  color: var(--text-light) !important;
+  transform: translateY(-2px);
+}
+
+/* Location inputs */
+.new-form__location__container {
+  background: var(--background-white);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 2px solid var(--primary-lightest);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.new-form__location__map__container {
+  height: 400px;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--primary-lightest);
+  border: 2px solid var(--primary-lightest);
+  margin-bottom: 1rem;
+}
+
+.new-form__location__map {
+  position: relative !important;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.new-form__location__lat-lng {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.new-form__location__lat-lng input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid var(--primary-lightest);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--primary-dark);
+  background-color: var(--background-white);
+  transition: all 0.3s ease;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.new-form__location__lat-lng input:disabled {
+  background-color: var(--primary-lightest);
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.new-form__location__lat-lng input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-shadow-color);
+  outline: none;
+}
+
+/* Form buttons */
+.new-form .form-buttons {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.new-form .form-buttons .btn {
+  padding: 14px 28px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  min-width: 180px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.new-form .form-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--primary-shadow-color);
+}
+
+.new-form .form-buttons .btn.btn-outline {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+/* Helper text */
+#documentations-more-info {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+/* CAMERA INPUT STYLING */
+.new-form__camera__container {
+  padding: 20px;
+  border: 2px solid var(--primary-lightest);
+  border-radius: 12px;
+  background-color: var(--background-white);
+  display: none;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.new-form__camera__container.open {
+  display: block;
+}
+
+.new-form__camera__video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  background-color: var(--primary-lightest);
+  display: block;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.new-form__camera__tools {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: var(--primary-lightest);
+  border-radius: 8px;
+}
+
+#camera-select {
+  padding: 10px 16px;
+  border: 2px solid var(--primary-lightest);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--primary-dark);
+  background-color: var(--background-white);
+  flex: 1;
+  max-width: 300px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#camera-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-shadow-color);
+  outline: none;
+}
+
+.new-form__camera__tools_buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+#camera-take-button {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: var(--primary-color);
+  color: var(--text-light) !important;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#camera-take-button:hover {
+  background-color: var(--primary-hover-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--primary-shadow-color);
+}
+
+#camera-take-button:disabled {
+  background-color: var(--primary-lightest);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.new-form__camera__canvas {
+  display: none;
+}
+
+.new-form__documentations__input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+/* Documentation outputs */
+.new-form__documentations__outputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  list-style: none;
+}
+
+.new-form__documentations__outputs-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  transition: all 0.3s ease;
+}
+
+.new-form__documentations__outputs-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px var(--primary-shadow-color);
+}
+
+.new-form__documentations__outputs-item__delete-btn {
+  width: 100%;
+  padding: 0;
+  border: 2px solid var(--primary-lightest);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: none;
+  position: relative;
+}
+
+.new-form__documentations__outputs-item__delete-btn::before {
+  content: '×';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.new-form__documentations__outputs-item:hover
+  .new-form__documentations__outputs-item__delete-btn::before {
+  opacity: 1;
+}
+
+.new-form__documentations__outputs-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.new-form__documentations__outputs-item:hover img {
+  filter: brightness(0.9);
+}

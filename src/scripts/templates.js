@@ -77,7 +77,12 @@ export function generateStoryItemTemplate({
             <i class="fas fa-map"></i> ${lat}, ${lon}
           </div>
           <div id="map-${id}" class="story-item__map" style="height: 200px; width: 100%; margin-top: 10px;"></div>
-        </div>          <div class="story-item__actions">
+        </div>          
+          <div class="story-item__actions">
+            <button class="btn story-item__save-button" data-storyid="${id}">
+              <i class="far fa-bookmark"></i>
+              <span>Save Story</span>
+            </button>
             <a class="story-item__read-more" href="#/stories/${id}">
               <span class="story-item__read-more-text">Detail</span>
               <span class="story-item__read-more-icon">

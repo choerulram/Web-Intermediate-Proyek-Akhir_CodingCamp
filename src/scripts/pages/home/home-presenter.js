@@ -1,10 +1,12 @@
 export default class HomePresenter {
   #view;
   #model;
+  #dbModel;
 
-  constructor({ view, model }) {
+  constructor({ view, model, dbModel }) {
     this.#view = view;
     this.#model = model;
+    this.#dbModel = dbModel;
   }
 
   async showStoriesListMap() {
@@ -39,6 +41,19 @@ export default class HomePresenter {
       this.#view.populateStoriesListError(error.message);
     } finally {
       this.#view.hideLoading();
+    }
+  }
+  async saveStory(storyId) {
+    try {
+      const response = await this.#model.getStoryById(storyId);
+      if (!response.ok) {
+        throw new Error('Failed to get story details');
+      }
+      await this.#dbModel.putReport(response.story);
+      this.#view.saveToBookmarkSuccessfully(storyId, 'Story saved to bookmarks successfully!');
+    } catch (error) {
+      console.error('saveStory error:', error);
+      this.#view.saveToBookmarkFailed(error.message || 'Failed to save story to bookmarks');
     }
   }
 }
