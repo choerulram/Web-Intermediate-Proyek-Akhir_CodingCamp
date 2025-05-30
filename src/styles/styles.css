@@ -429,6 +429,7 @@ header {
   color: var(--primary-dark);
 }
 
+@import url('./components/navigation.css');
 @import url('./components/auth.css');
 @import url('./components/home.css');
 @import url('./components/about.css');

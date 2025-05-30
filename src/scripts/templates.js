@@ -12,26 +12,27 @@ export function generateLoaderAbsoluteTemplate() {
   `;
 }
 
-export function generateMainNavigationListTemplate() {
+export function generateMainNavigationListTemplate(activePage = 'home') {
   return `
-    <li><a id="story-list-button" class="story-list-button" href="#/">Beranda</a></li>
-    <li><a id="bookmark-button" class="bookmark-button" href="#/bookmark">Bookmark</a></li>
-    <li><a id="about-button" class="about-button" href="#/about">About</a></li>
+    <li><a id="story-list-button" class="story-list-button ${activePage === 'home' ? 'active' : ''}" href="#/"><i class="fas fa-home"></i> Beranda</a></li>
+    <li><a id="bookmark-button" class="bookmark-button ${activePage === 'bookmark' ? 'active' : ''}" href="#/bookmark"><i class="fas fa-bookmark"></i> Bookmark</a></li>
+    <li><a id="about-button" class="about-button ${activePage === 'about' ? 'active' : ''}" href="#/about"><i class="fas fa-info-circle"></i> About</a></li>
   `;
 }
 
 export function generateUnauthenticatedNavigationListTemplate() {
   return `
-    <li><a id="story-list-button" class="story-list-button" href="#/">Beranda</a></li>
-    <li><a id="about-button" class="about-button" href="#/about">About</a></li>
-    <li><a id="login-button" href="#/login">Login</a></li>
+    <li><a id="story-list-button" class="story-list-button" href="#/"><i class="fas fa-home"></i> Beranda</a></li>
+    <li><a id="bookmark-button" class="bookmark-button" href="#/"><i class="fas fa-bookmark"></i> Bookmark</a></li>
+    <li><a id="about-button" class="about-button" href="#/about"><i class="fas fa-info-circle"></i> About</a></li>
+    <li><a id="login-button" class="login-button" href="#/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
   `;
 }
 
 export function generateAuthenticatedNavigationListTemplate() {
   return `
     <li id="push-notification-tools" class="push-notification-tools"></li>
-    <li><a id="new-story-button" class="btn new-story-button" href="#/new">Buat Cerita <i class="fas fa-plus"></i></a></li>
+    <li><a id="new-story-button" class="btn new-story-button" href="#/new"><i class="fas fa-pencil-alt"></i> Buat Cerita</a></li>
     <li><a id="logout-button" class="logout-button" href="#/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
   `;
 }
@@ -82,7 +83,7 @@ export function generateStoryItemTemplate({
           <div class="story-item__actions">
             <button class="btn story-item__save-button" data-storyid="${id}">
               <i class="far fa-bookmark"></i>
-              <span>Save Story</span>
+              <span>Save</span>
             </button>
             <a class="story-item__read-more" href="#/stories/${id}">
               <span class="story-item__read-more-text">Detail</span>
@@ -136,7 +137,7 @@ export function generateStoryDetailModalTemplate({
 
 export function generateSubscribeButtonTemplate() {
   return `
-    <button id="subscribe-button" class="btn subscribe-button">
+    <button id="subscribe-button" class="btn subscribe-button" title="Aktifkan notifikasi">
       <span class="button-content">
         <i class="fas fa-bell"></i>
         <span class="button-text">Aktifkan Notifikasi</span>
@@ -147,7 +148,7 @@ export function generateSubscribeButtonTemplate() {
 
 export function generateUnsubscribeButtonTemplate() {
   return `
-    <button id="unsubscribe-button" class="btn unsubscribe-button">
+    <button id="unsubscribe-button" class="btn unsubscribe-button" title="Nonaktifkan notifikasi">
       <span class="button-content">
         <i class="fas fa-bell-slash"></i>
         <span class="button-text">Nonaktifkan Notifikasi</span>

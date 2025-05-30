@@ -17,7 +17,7 @@ const ENDPOINTS = {
   STORE_NEW_STORY_COMMENT: (storyId) => `${BASE_URL}/stories/${storyId}/comments`,
   // Notifications
   SUBSCRIBE: `${BASE_URL}/notifications/subscribe`,
-  UNSUBSCRIBE: `${BASE_URL}/notifications/subscribe`, // Same as SUBSCRIBE but uses DELETE method
+  UNSUBSCRIBE: `${BASE_URL}/notifications/unsubscribe`,
   SEND_STORY_TO_ME: (storyId) => `${BASE_URL}/stories/${storyId}/notify-me`,
   SEND_STORY_TO_USER: (storyId) => `${BASE_URL}/stories/${storyId}/notify`,
   SEND_STORY_TO_ALL_USER: (storyId) => `${BASE_URL}/stories/${storyId}/notify-all`,

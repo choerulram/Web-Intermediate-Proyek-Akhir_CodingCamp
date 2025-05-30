@@ -4,6 +4,7 @@ import {
   generateStoryItemTemplate,
   generateStoriesListEmptyTemplate,
   generateStoryDetailModalTemplate,
+  generateMainNavigationListTemplate,
 } from '../../templates';
 import Database from '../../data/database';
 import Map from '../../utils/map';

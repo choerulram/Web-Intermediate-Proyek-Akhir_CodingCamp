@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack --config ./webpack.prod.js",
     "start-dev": "webpack serve --config ./webpack.dev.js",
-    "serve": "http-server ./dist --port 3074"
+    "serve": "http-server ./dist --port 3077"
   },
   "keywords": [],
   "author": "YOUR_NAME <yourmail@mail.com>",

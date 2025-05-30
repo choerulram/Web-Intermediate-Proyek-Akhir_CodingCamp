@@ -56,11 +56,16 @@ class App {
       });
     });
   }
-
   #setupNavigationList() {
     const isLogin = !!getAccessToken();
     const navListMain = this.#drawerNavigation.children.namedItem('navlist-main');
     const navList = this.#drawerNavigation.children.namedItem('navlist');
+    const currentPath = getActivePathname();
+
+    // Determine active page
+    let activePage = 'home';
+    if (currentPath === '/bookmark') activePage = 'bookmark';
+    else if (currentPath === '/about') activePage = 'about';
 
     // User not log in
     if (!isLogin) {
@@ -69,7 +74,7 @@ class App {
       return;
     }
 
-    navListMain.innerHTML = generateMainNavigationListTemplate();
+    navListMain.innerHTML = generateMainNavigationListTemplate(activePage);
     navList.innerHTML = generateAuthenticatedNavigationListTemplate();
 
     const logoutButton = document.getElementById('logout-button');

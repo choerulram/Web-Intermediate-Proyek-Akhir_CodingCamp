@@ -1,0 +1,110 @@
+/* Navigation Styles */
+.navigation {
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navigation__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.navigation__list {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  align-items: center;
+}
+
+/* Main navigation links */
+.navigation__list a {
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Active state for navigation links */
+.navigation__list a.active {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  box-shadow: 0 2px 4px var(--primary-shadow-color);
+}
+
+/* Hover states */
+.navigation__list a:hover:not(.active) {
+  background: var(--primary-lightest);
+  transform: translateY(-2px);
+}
+
+/* Special buttons */
+.new-story-button {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white !important;
+  padding: 0.7rem 1.5rem !important;
+  border-radius: 25px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px var(--primary-shadow-color);
+  transition: all 0.3s ease;
+}
+
+.new-story-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--primary-shadow-color);
+}
+
+.logout-button {
+  color: #e74c3c !important;
+  border: 2px solid #e74c3c;
+  padding: 0.7rem 1.5rem !important;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+  background: #e74c3c;
+  color: white !important;
+}
+
+/* Notification button */
+.subscribe-button,
+.unsubscribe-button {
+  background: var(--background-light);
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.subscribe-button:hover {
+  background: var(--primary-lightest);
+  transform: translateY(-2px);
+}
+
+.unsubscribe-button {
+  background: #ffecec;
+  color: #e74c3c;
+}
+
+.unsubscribe-button:hover {
+  background: #ffe0e0;
+}
+
+/* Icons in buttons */
+.button-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

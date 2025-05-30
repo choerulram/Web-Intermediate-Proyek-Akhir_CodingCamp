@@ -5,6 +5,7 @@ import {
   generateStoriesListEmptyTemplate,
   generateStoriesListErrorTemplate,
   generateStoryDetailModalTemplate,
+  generateMainNavigationListTemplate,
 } from '../../templates';
 import HomePresenter from './home-presenter';
 import * as CityCareAPI from '../../data/api';
