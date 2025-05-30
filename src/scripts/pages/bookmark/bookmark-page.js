@@ -1,58 +1,27 @@
-import Map from '../../utils/map';
+import BookmarkPresenter from './bookmark-presenter';
 import {
   generateLoaderAbsoluteTemplate,
   generateStoryItemTemplate,
   generateStoriesListEmptyTemplate,
-  generateStoriesListErrorTemplate,
   generateStoryDetailModalTemplate,
 } from '../../templates';
-import HomePresenter from './home-presenter';
-import * as CityCareAPI from '../../data/api';
 import Database from '../../data/database';
+import Map from '../../utils/map';
+import * as CityCareAPI from '../../data/api';
 
-export default class HomePage {
+export default class BookmarkPage {
   #presenter = null;
   async render() {
     return `
       <section class="container">
         <div class="stories-list__container">
-          <h1 class="section-title">Daftar Cerita</h1>
-          <div id="stories-list"></div>
-          <div id="stories-list-loading-container"></div>
+          <h1 class="section-title">Bookmarked Stories</h1>
+          <div id="bookmarked-stories"></div>
+          <div id="bookmarked-stories-loading-container"></div>
         </div>
         <div id="modal-container"></div>
       </section>
     `;
-  }
-  async afterRender() {
-    this.#presenter = new HomePresenter({
-      view: this,
-      model: CityCareAPI,
-      dbModel: Database,
-    });
-
-    await this.#presenter.initialGalleryAndMap();
-    await this.#updateSavedButtonStates();
-  }
-
-  async #updateSavedButtonStates() {
-    try {
-      const savedStories = await Database.getAllReports();
-      const savedStoryIds = savedStories.map((story) => story.id);
-
-      document.querySelectorAll('.story-item__save-button').forEach((button) => {
-        const storyId = button.dataset.storyid;
-        if (savedStoryIds.includes(storyId)) {
-          button.innerHTML = `
-            <i class="fas fa-bookmark"></i>
-            <span>Saved</span>
-          `;
-          button.classList.add('saved');
-        }
-      });
-    } catch (error) {
-      console.error('Error updating saved button states:', error);
-    }
   }
 
   async #setupStoryDetailModal() {
@@ -78,13 +47,16 @@ export default class HomePage {
   async showStoryDetailModal(storyId) {
     this.showLoading();
     try {
-      const response = await CityCareAPI.getStoryById(storyId);
-      if (!response.ok) {
-        throw new Error(response.message || 'Failed to fetch story details');
+      // For bookmarked stories, we already have the data in IndexedDB
+      const stories = await Database.getAllReports();
+      const story = stories.find(s => s.id === storyId);
+      
+      if (!story) {
+        throw new Error('Story not found in bookmarks');
       }
 
       const modalContainer = document.getElementById('modal-container');
-      modalContainer.innerHTML = generateStoryDetailModalTemplate(response.story);
+      modalContainer.innerHTML = generateStoryDetailModalTemplate(story);
 
       const modal = document.getElementById(`modal-${storyId}`);
       modal.classList.add('show');
@@ -93,18 +65,18 @@ export default class HomePage {
       const mapContainer = document.getElementById(`modal-map-${storyId}`);
       if (mapContainer) {
         const map = await Map.build(`#modal-map-${storyId}`, {
-          center: [response.story.lat, response.story.lon],
+          center: [story.lat, story.lon],
           zoom: 13,
         });
 
         map.addMarker(
-          [response.story.lat, response.story.lon],
+          [story.lat, story.lon],
           {},
           {
             content: `
               <div class="story-map-popup">
-                <h3>${response.story.name}</h3>
-                <p>${response.story.description}</p>
+                <h3>${story.name}</h3>
+                <p>${story.description}</p>
               </div>
             `,
           },
@@ -125,7 +97,23 @@ export default class HomePage {
     });
   }
 
-  populateStoriesList(message, stories) {
+  async afterRender() {
+    this.#presenter = new BookmarkPresenter({
+      view: this,
+      model: Database,
+    });
+
+    await this.#presenter.getBookmarkedStories();
+  }
+
+  showLoading() {
+    document.getElementById('bookmarked-stories-loading-container').innerHTML =
+      generateLoaderAbsoluteTemplate();
+  }
+
+  hideLoading() {
+    document.getElementById('bookmarked-stories-loading-container').innerHTML = '';
+  }  populateBookmarkedStories(stories) {
     if (stories.length <= 0) {
       this.populateStoriesListEmpty();
       return;
@@ -139,12 +127,34 @@ export default class HomePage {
         }),
       );
     }, '');
-    document.getElementById('stories-list').innerHTML = `
+
+    document.getElementById('bookmarked-stories').innerHTML = `
       <div class="stories-list">${html}</div>
-    `; // Setup event listeners after populating stories
+    `;
+
+    // Update all save buttons to show as "Saved"
+    document.querySelectorAll('.story-item__save-button').forEach((button) => {
+      button.innerHTML = `
+        <i class="fas fa-bookmark"></i>
+        <span>Saved</span>
+      `;
+      button.classList.add('saved');
+    });
+
+    // Setup detail button functionality
     this.#setupStoryDetailModal();
-    this.#setupSaveStoryButtons();
-    this.#setupSaveStoryButtons();
+
+    // Update all save buttons to show as "Saved"
+    document.querySelectorAll('.story-item__save-button').forEach((button) => {
+      button.innerHTML = `
+        <i class="fas fa-bookmark"></i>
+        <span>Saved</span>
+      `;
+      button.classList.add('saved');
+    });
+
+    // Setup detail modal functionality
+    this.#setupStoryDetailModal();
 
     // Give the DOM time to update before initializing maps
     setTimeout(() => {
@@ -183,58 +193,6 @@ export default class HomePage {
   }
 
   populateStoriesListEmpty() {
-    document.getElementById('stories-list').innerHTML = generateStoriesListEmptyTemplate();
-  }
-
-  populateStoriesListError(message) {
-    document.getElementById('stories-list').innerHTML = generateStoriesListErrorTemplate(message);
-  }
-
-  async initialMap() {
-    // TODO: map initialization
-  }
-
-  showMapLoading() {
-    document.getElementById('map-loading-container').innerHTML = generateLoaderAbsoluteTemplate();
-  }
-
-  hideMapLoading() {
-    document.getElementById('map-loading-container').innerHTML = '';
-  }
-
-  showLoading() {
-    document.getElementById('stories-list-loading-container').innerHTML =
-      generateLoaderAbsoluteTemplate();
-  }
-
-  hideLoading() {
-    document.getElementById('stories-list-loading-container').innerHTML = '';
-  }
-
-  saveToBookmarkSuccessfully(storyId, message) {
-    const saveButton = document.querySelector(
-      `.story-item__save-button[data-storyid="${storyId}"]`,
-    );
-    if (saveButton) {
-      saveButton.innerHTML = `
-        <i class="fas fa-bookmark"></i>
-        <span>Saved</span>
-      `;
-      saveButton.classList.add('saved');
-    }
-    alert(message);
-  }
-
-  saveToBookmarkFailed(message) {
-    alert(message);
-  }
-
-  #setupSaveStoryButtons() {
-    document.querySelectorAll('.story-item__save-button').forEach((button) => {
-      button.addEventListener('click', async (event) => {
-        const storyId = event.currentTarget.dataset.storyid;
-        await this.#presenter.saveStory(storyId);
-      });
-    });
+    document.getElementById('bookmarked-stories').innerHTML = generateStoriesListEmptyTemplate();
   }
 }

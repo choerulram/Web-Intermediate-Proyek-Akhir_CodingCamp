@@ -20,6 +20,10 @@ const Database = {
 
     return (await dbPromise).put(OBJECT_STORE_NAME, report);
   },
+
+  async getAllReports() {
+    return (await dbPromise).getAll(OBJECT_STORE_NAME);
+  },
 };
 
 export default Database;
