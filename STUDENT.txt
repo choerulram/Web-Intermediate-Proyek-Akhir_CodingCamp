@@ -1,2 +1,2 @@
-APP_URL=<url_aplikasi>
-MAP_SERVICE_API_KEY=<api_key>
+APP_URL=https://admirable-tanuki-fa7932.netlify.app
+MAP_SERVICE_API_KEY=3orRiBCde88hwrVwFv5h
