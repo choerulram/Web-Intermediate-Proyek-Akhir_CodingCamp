@@ -124,10 +124,12 @@ class App {
     try {
       const pathname = getActivePathname();
       const url = getRoute(pathname);
-      const page = routes[url];
+      let page = routes[url];
 
       if (!page) {
-        throw new Error('Page not found');
+        // Redirect to 404 page if route not found
+        location.hash = '/404';
+        page = routes['/404'];
       }
 
       const transition = transitionHelper({
@@ -147,12 +149,8 @@ class App {
       }
     } catch (error) {
       console.error('Error rendering page:', error);
-      this.#content.innerHTML = `
-        <div class="error-container">
-          <h2>Error</h2>
-          <p>${error.message}</p>
-        </div>
-      `;
+      // Redirect to 404 page for any rendering errors
+      location.hash = '/404';
     }
   }
 }

@@ -430,10 +430,11 @@ header {
 }
 
 @import url('./components/navigation.css');
-@import url('./components/auth.css');
-@import url('./components/home.css');
-@import url('./components/about.css');
 @import url('./components/story-form.css');
+@import url('./components/auth.css');
+@import url('./components/about.css');
+@import url('./components/home.css');
+@import url('./components/not-found.css');
 
 /* FOOTER */
 footer {

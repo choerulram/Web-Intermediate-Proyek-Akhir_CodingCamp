@@ -1,5 +1,6 @@
 import { getActiveRoute } from '../routes/url-parser';
 import { ACCESS_TOKEN_KEY } from '../config';
+import LoginPage from '../pages/auth/login/login-page';
 
 export function getAccessToken() {
   try {
@@ -54,9 +55,11 @@ export function checkAuthenticatedRoute(page) {
   const isLogin = !!getAccessToken();
 
   if (!isLogin) {
-    alert('Anda harus login terlebih dahulu.');
-    location.hash = '/login';
-    return null;
+    setTimeout(() => {
+      alert('Anda harus login terlebih dahulu.');
+      location.hash = '/login';
+    }, 0);
+    return new LoginPage();
   }
 
   return page;
